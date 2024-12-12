@@ -46,16 +46,20 @@ const RegisterPage = () => {
         throw new Error("file_upload_api is not defined.");
       }
 
-      const formData = new FormData();
-      formData.append("image", data.photo[0]);
+      let imageUrl = "";
 
-      const imgResponse = await fetch(config.file_upload_api, {
-        method: "POST",
-        body: formData,
-      });
-      const responseImage = await imgResponse.json();
+      if (data.photo?.[0]) {
+        const formData = new FormData();
+        formData.append("image", data.photo[0]);
 
-      const imageUrl = responseImage.data.display_url;
+        const imgResponse = await fetch(config.file_upload_api, {
+          method: "POST",
+          body: formData,
+        });
+        const responseImage = await imgResponse.json();
+
+        imageUrl = responseImage.data.display_url;
+      }
 
       const { email, name, password } = data;
 
