@@ -8,8 +8,9 @@ import {
 } from "@reduxjs/toolkit/query/react";
 
 import { RootState } from "@/redux/store";
-import config from "@/config";
+
 import { logout, setUser } from "../auth/authSliece";
+import config from "@/config";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: config.api_url,
@@ -72,5 +73,5 @@ export const baseApi = createApi({
   baseQuery: baseQueryWithRefreshToken,
 
   endpoints: () => ({}),
-  tagTypes: ["rating", "booking", "profile"],
+  tagTypes: ["lessons", "vocabs", "users"],
 });

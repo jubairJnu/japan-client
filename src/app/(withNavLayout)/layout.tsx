@@ -2,6 +2,7 @@ import Providers from "@/lib/Providers";
 
 import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 export const metadata: Metadata = {
   title: "Learn Japan",
@@ -15,9 +16,11 @@ export default async function RootLayout({
 }>) {
   return (
     <>
-      <Navbar />
+      <ProtectedRoutes>
+        <Navbar />
 
-      <Providers>{children}</Providers>
+        <Providers>{children}</Providers>
+      </ProtectedRoutes>
     </>
   );
 }
