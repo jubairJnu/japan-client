@@ -34,12 +34,6 @@ const lesonApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["lessons"],
     }),
-
-    // delete promocode
-
-    //
-
-    //
   }),
 });
 

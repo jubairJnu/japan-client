@@ -10,16 +10,34 @@ import { Label } from "@/components/ui/label";
 
 import { FieldValues, useForm } from "react-hook-form";
 import { FaRegEdit } from "react-icons/fa";
-import { TLesson } from "../dashboard/lessons-manage/page";
-import { useUpdateLessonMutation } from "@/redux/features/lesson.api";
+
 import LoadingButton from "@/utils/LoadingButton";
 import Swal from "sweetalert2";
 import { TError } from "@/type";
+import { useUpdateVocabMutation } from "@/redux/features/vocab.api";
+import { TVocabs } from "../dashboard/vocab-manage/page";
+import Required from "@/utils/Required";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useGetAllLessonQuery } from "@/redux/features/lesson.api";
 
-const EditLessonModal = ({ item }: { item: TLesson }) => {
-  const [update, { isLoading }] = useUpdateLessonMutation();
+const EditVocabsModal = ({ item }: { item: TVocabs }) => {
+  const { data: lessons, isLoading: lessonLoading } = useGetAllLessonQuery({});
 
-  const { register, handleSubmit } = useForm();
+  const [update, { isLoading }] = useUpdateVocabMutation();
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const handleUpdate = async (data: FieldValues) => {
     const { name, number, vocabCount } = data;
@@ -73,27 +91,61 @@ const EditLessonModal = ({ item }: { item: TLesson }) => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 py-4">
             {/* name */}
             <div className="">
-              <Label htmlFor="Name">Lesson Name</Label>
+              <Label htmlFor="Name">Word</Label>
               <Input
-                defaultValue={item?.name}
-                placeholder="Greeting"
+                defaultValue={item?.word}
                 type="text"
-                {...register("name", { required: true })}
+                {...register("word", { required: true })}
               />
             </div>
             {/* phone */}
             <div className="">
-              <Label>Lesson Number</Label>
+              <Label>Meaning</Label>
               <Input
-                {...register("number", { required: true })}
-                defaultValue={item?.number}
+                {...register("meaning", { required: true })}
+                defaultValue={item?.meaning}
               />
             </div>
+
             <div className="">
-              <Label>Vocabulary Count</Label>
+              <Label>Pronounciation</Label>
               <Input
-                {...register("vocabCount", { required: true })}
-                defaultValue={item?.vocabCount}
+                {...register("pronunciation", { required: true })}
+                defaultValue={item?.pronunciation}
+              />
+            </div>
+            <div>
+              <Label>
+                Lesson No <Required />
+              </Label>
+              <Select
+                {...register("lessonNo", { required: true })}
+                onValueChange={(value) => setValue("lessonNo", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={lessonLoading ? "Loading..." : "Select Lesson"}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {lessons?.data?.map(
+                    (item: { _id: string; name: string; number: string }) => (
+                      <SelectItem key={item._id} value={item.number}>
+                        {item.name}
+                      </SelectItem>
+                    )
+                  )}
+                </SelectContent>
+                {errors.lessonNo && (
+                  <span className="text-red-500">Lesson No is required</span>
+                )}
+              </Select>
+            </div>
+            <div className="col-span-2">
+              <Label>When To Say</Label>
+              <Input
+                {...register("whenToSay", { required: true })}
+                defaultValue={item?.whenToSay}
               />
             </div>
           </div>
@@ -117,4 +169,4 @@ const EditLessonModal = ({ item }: { item: TLesson }) => {
   );
 };
 
-export default EditLessonModal;
+export default EditVocabsModal;

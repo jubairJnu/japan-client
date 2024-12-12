@@ -1,10 +1,7 @@
 "use client";
 
-import {
-  useDeleteLessonMutation,
-  useGetAllLessonQuery,
-} from "@/redux/features/lesson.api";
 import CommonHeader from "@/utils/CommonHeder";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -14,22 +11,28 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Loader2, LoaderCircle } from "lucide-react";
-import EditLessonModal from "../../components/EditLessonModal";
-import Swal from "sweetalert2";
+import {
+  useDeleteVocabsMutation,
+  useGetAllVocabsQuery,
+} from "@/redux/features/vocab.api";
 import { Button } from "@/components/ui/button";
 import { FaTrash } from "react-icons/fa";
+import EditVocabsModal from "../../components/EditVocabsModal";
+import Swal from "sweetalert2";
 
-export type TLesson = {
+export type TVocabs = {
   _id: string;
-  name: string;
-  number: number;
-  vocabCount: number;
+  lessonNo: number;
+  word: string;
+  meaning: string;
+  pronunciation: string;
+  whenToSay: string;
 };
 
-const LessonMangePage = () => {
-  const [deleteItem, { isLoading: deleting }] = useDeleteLessonMutation();
+const VocabManagePage = () => {
+  const { data: vocabs, isLoading } = useGetAllVocabsQuery({});
 
-  const { data: lessons, isLoading } = useGetAllLessonQuery({});
+  const [deleteItem, { isLoading: deleting }] = useDeleteVocabsMutation();
 
   const handleDelete = async (id: string) => {
     Swal.fire({
@@ -56,22 +59,23 @@ const LessonMangePage = () => {
   };
 
   return (
-    <div className=" min-h-screen">
+    <div>
       <CommonHeader
-        manage="Lesson Management"
-        add="Add Lesson"
-        link="/dashboard/add-lesson"
+        manage="Vocabulary Manage"
+        add="Add Vocabulary"
+        link="/dashboard/add-vocab"
       />
 
-      {/* table */}
       <div className="w-full max-w-7xl px-3 container mx-auto">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>#</TableHead>
-              <TableHead>Lesson Name</TableHead>
-              <TableHead>Lesson Number</TableHead>
-              <TableHead>Vocabulary Count</TableHead>
+              <TableHead>Word</TableHead>
+              <TableHead>Meaning</TableHead>
+              <TableHead>Pronounciation</TableHead>
+              <TableHead>When To Say</TableHead>
+              <TableHead>Lesson No</TableHead>
 
               <TableHead>Action</TableHead>
             </TableRow>
@@ -79,19 +83,21 @@ const LessonMangePage = () => {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center mx-auto">
+                <TableCell colSpan={7} className="text-center mx-auto">
                   <LoaderCircle className="animate-spin w-full" />
                 </TableCell>
               </TableRow>
-            ) : lessons?.data?.length ? (
-              lessons?.data?.map((item: TLesson, index: number) => (
+            ) : vocabs?.data?.length ? (
+              vocabs?.data?.map((item: TVocabs, index: number) => (
                 <TableRow key={item._id}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{item?.name}</TableCell>
-                  <TableCell>{item?.number}</TableCell>
-                  <TableCell>{item?.vocabCount}</TableCell>
+                  <TableCell>{item?.word}</TableCell>
+                  <TableCell>{item?.meaning}</TableCell>
+                  <TableCell>{item?.pronunciation}</TableCell>
+                  <TableCell>{item?.whenToSay}</TableCell>
+                  <TableCell>{item?.lessonNo}</TableCell>
                   <TableCell className="flex items-center gap-3">
-                    <EditLessonModal item={item} />
+                    <EditVocabsModal item={item} />
                     <Button
                       disabled={deleting}
                       onClick={() => handleDelete(item._id)}
@@ -109,7 +115,7 @@ const LessonMangePage = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={4} className="text-center">
+                <TableCell colSpan={7} className="text-center">
                   No results found.
                 </TableCell>
               </TableRow>
@@ -121,4 +127,4 @@ const LessonMangePage = () => {
   );
 };
 
-export default LessonMangePage;
+export default VocabManagePage;
