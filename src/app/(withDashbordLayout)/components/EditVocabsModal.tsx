@@ -60,6 +60,7 @@ const EditVocabsModal = ({ item }: { item: TVocabs }) => {
           title: "Lesson Updated successfully",
           icon: "success",
         });
+        reset();
       }
     } catch (err) {
       const error = err as TError;
@@ -141,7 +142,7 @@ const EditVocabsModal = ({ item }: { item: TVocabs }) => {
                 )}
               </Select>
             </div>
-            <div className="col-span-2">
+            <div className="md:col-span-2">
               <Label>When To Say</Label>
               <Input
                 {...register("whenToSay", { required: true })}

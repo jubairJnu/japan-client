@@ -136,7 +136,7 @@ const AddVocabsPage = () => {
                 )}
               </Select>
             </div>
-            <div className="grid col-span-2 mt-3">
+            <div className="grid md:col-span-2 mt-3">
               <Label>
                 When To Say <Required />{" "}
               </Label>
