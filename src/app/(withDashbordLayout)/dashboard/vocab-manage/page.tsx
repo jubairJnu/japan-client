@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import CommonHeader from "@/utils/CommonHeder";
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -19,6 +20,15 @@ import { Button } from "@/components/ui/button";
 import { FaTrash } from "react-icons/fa";
 import EditVocabsModal from "../../components/EditVocabsModal";
 import Swal from "sweetalert2";
+import { useGetAllLessonQuery } from "@/redux/features/lesson.api";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export type TVocabs = {
   _id: string;
@@ -30,7 +40,15 @@ export type TVocabs = {
 };
 
 const VocabManagePage = () => {
-  const { data: vocabs, isLoading } = useGetAllVocabsQuery({});
+  const { data: lessons, isLoading: lessonLoading } = useGetAllLessonQuery({});
+
+  const [lessonNo, setLessonNo] = useState("");
+
+  const queryParams: Record<string, any> = {};
+
+  if (lessons) queryParams.lesson = lessonNo;
+
+  const { data: vocabs, isLoading } = useGetAllVocabsQuery(queryParams);
 
   const [deleteItem, { isLoading: deleting }] = useDeleteVocabsMutation();
 
@@ -65,6 +83,26 @@ const VocabManagePage = () => {
         add="Add Vocabulary"
         link="/dashboard/add-vocab"
       />
+
+      <div className="ml-auto w-36 me-10">
+        <Label>Filter By Lesson</Label>
+        <Select onValueChange={(value) => setLessonNo(value)}>
+          <SelectTrigger>
+            <SelectValue
+              placeholder={lessonLoading ? "Loading..." : "Select Lesson"}
+            />
+          </SelectTrigger>
+          <SelectContent>
+            {lessons?.data?.map(
+              (item: { _id: string; name: string; number: string }) => (
+                <SelectItem key={item.number} value={item.number}>
+                  {item.name}
+                </SelectItem>
+              )
+            )}
+          </SelectContent>
+        </Select>
+      </div>
 
       <div className="w-full max-w-7xl px-3 container mx-auto">
         <Table>

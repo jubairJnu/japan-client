@@ -120,6 +120,7 @@ const EditVocabsModal = ({ item }: { item: TVocabs }) => {
                 Lesson No <Required />
               </Label>
               <Select
+                defaultValue={String(item.lessonNo)}
                 {...register("lessonNo", { required: true })}
                 onValueChange={(value) => setValue("lessonNo", value)}
               >
@@ -131,7 +132,7 @@ const EditVocabsModal = ({ item }: { item: TVocabs }) => {
                 <SelectContent>
                   {lessons?.data?.map(
                     (item: { _id: string; name: string; number: string }) => (
-                      <SelectItem key={item._id} value={item.number}>
+                      <SelectItem key={item._id} value={String(item.number)}>
                         {item.name}
                       </SelectItem>
                     )
