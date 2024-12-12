@@ -31,15 +31,12 @@ const EditUserModal = ({ item }: { item: TUser }) => {
   } = useForm();
 
   const handleUpdate = async (data: FieldValues) => {
-    const { name, number, vocabCount } = data;
+    const { name, email, role } = data;
 
-    const updatePayload = {
-      id: item._id,
-      data: { name, number, vocabCount },
-    };
+    const payload = { id: item._id, data: { name, email, role } };
 
     try {
-      const res = await update(updatePayload).unwrap();
+      const res = await update(payload).unwrap();
 
       if (res.success) {
         Swal.fire({

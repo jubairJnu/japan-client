@@ -19,7 +19,7 @@ const SingleLessonPage = ({ params }: TParams) => {
     }
   );
 
-  console.log(vocabs, "vocabs");
+
 
   return (
     <div>

@@ -54,7 +54,7 @@ const VocabularyPagination = ({
         <Confetti width={window.innerWidth} height={window.innerHeight} />
       )}
 
-      <div className="w-[380px] h-72 rounded-lg drop-shadow-lg border bg-[#f7f7f7] mx-auto pt-2 pb-5  mt-10">
+      <div className="w-[350px] h-72 rounded-lg drop-shadow-lg border bg-[#f7f7f7] mx-auto pt-2 pb-5  mt-10">
         <p className="mt-2">
           {currentIndex + 1} /{" "}
           <span className="text-blue-600">{vocabularies?.length}</span>

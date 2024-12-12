@@ -26,11 +26,7 @@ const UserManagePage = () => {
 
   return (
     <div>
-      <CommonHeader
-        manage="Manage User"
-        add="Add User"
-        link="/dashboard/add-user"
-      />
+      <CommonHeader manage="Manage User" />
 
       {/* table */}
       <div className="w-full max-w-7xl px-3 container mx-auto">

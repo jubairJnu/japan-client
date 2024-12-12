@@ -56,7 +56,6 @@ const RegisterPage = () => {
       const responseImage = await imgResponse.json();
 
       const imageUrl = responseImage.data.display_url;
-      console.log(imageUrl, "img res");
 
       const { email, name, password } = data;
 
@@ -126,8 +125,6 @@ const RegisterPage = () => {
     }
     return true;
   };
-
-  console.log(config.api_url, "api base");
 
   return (
     <div className="bg-gray-100  bg-cover bg-center h-screen flex items-center justify-center px-2">
