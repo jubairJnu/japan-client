@@ -31,9 +31,9 @@ const Navbar = () => {
     <div className="w-full shadow-[5px_1px_10px_1px_rgba(0,0,0,0.3)]">
       <div className="flex items-center justify-between px-5 w-full max-w-7xl mx-auto container">
         {/* Logo */}
-        <div>
+        <Link href="/">
           <Image src={logo} alt="logo" width={60} height={60} />
-        </div>
+        </Link>
 
         {/* Navigation Links for Medium and Larger Screens */}
         <div className="hidden md:flex space-x-4 font-semibold text-gray-600 text-[16px]">
@@ -73,7 +73,9 @@ const Navbar = () => {
             <SheetContent side="left">
               <SheetHeader>
                 <SheetTitle className="text-lg font-bold">
-                  <Image src={logo} alt="logo" width={60} height={60} />
+                  <Link href="/">
+                    <Image src={logo} alt="logo" width={60} height={60} />
+                  </Link>
                 </SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-5 font-semibold text-gray-600 text-[16px] mt-4">
