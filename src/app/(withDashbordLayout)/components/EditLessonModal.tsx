@@ -1,10 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -15,8 +10,10 @@ import { useUpdateLessonMutation } from "@/redux/features/lesson.api";
 import LoadingButton from "@/utils/LoadingButton";
 import Swal from "sweetalert2";
 import { TError } from "@/type";
+import { useState } from "react";
 
 const EditLessonModal = ({ item }: { item: TLesson }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [update, { isLoading }] = useUpdateLessonMutation();
 
   const { register, handleSubmit } = useForm();
@@ -42,6 +39,7 @@ const EditLessonModal = ({ item }: { item: TLesson }) => {
           title: "Lesson Updated successfully",
           icon: "success",
         });
+        setIsDialogOpen(false);
       }
     } catch (err) {
       const error = err as TError;
@@ -58,7 +56,7 @@ const EditLessonModal = ({ item }: { item: TLesson }) => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button
           size="icon"
@@ -97,7 +95,7 @@ const EditLessonModal = ({ item }: { item: TLesson }) => {
               />
             </div>
           </div>
-          <DialogClose asChild>
+          <div>
             {isLoading ? (
               <LoadingButton />
             ) : (
@@ -110,7 +108,7 @@ const EditLessonModal = ({ item }: { item: TLesson }) => {
                 Submit
               </Button>
             )}
-          </DialogClose>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

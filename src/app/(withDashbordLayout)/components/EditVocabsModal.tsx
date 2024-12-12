@@ -1,10 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -25,8 +20,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetAllLessonQuery } from "@/redux/features/lesson.api";
+import { useState } from "react";
 
 const EditVocabsModal = ({ item }: { item: TVocabs }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { data: lessons, isLoading: lessonLoading } = useGetAllLessonQuery({});
 
   const [update, { isLoading }] = useUpdateVocabMutation();
@@ -61,6 +58,7 @@ const EditVocabsModal = ({ item }: { item: TVocabs }) => {
           icon: "success",
         });
         reset();
+        setIsDialogOpen(false);
       }
     } catch (err) {
       const error = err as TError;
@@ -77,7 +75,7 @@ const EditVocabsModal = ({ item }: { item: TVocabs }) => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button
           size="icon"
@@ -151,7 +149,7 @@ const EditVocabsModal = ({ item }: { item: TVocabs }) => {
               />
             </div>
           </div>
-          <DialogClose asChild>
+          <div>
             {isLoading ? (
               <LoadingButton />
             ) : (
@@ -164,7 +162,7 @@ const EditVocabsModal = ({ item }: { item: TVocabs }) => {
                 Submit
               </Button>
             )}
-          </DialogClose>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
